@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SickSense | Welcome</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* PAGE LAYOUT: Centers the login card both vertically and horizontally 
+           using Flexbox. 'min-height: 100vh' ensures it takes up the full screen. */
+        .login-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--primary);
+            padding: 20px;
+        }
+
+        /* CARD STYLING: Limits the width of the login box for better readability on desktop */
+        .login-card { width: 100%; max-width: 400px; }
+        .login-card label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .login-card input { margin-bottom: 20px; }
+    </style>
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <div class="card">
+            <!-- HEADER: Branding and sub-text for the portal -->
+            <h2 style="text-align:center; margin-bottom: 10px;">SickSense Login</h2>
+            <p style="text-align:center; margin-bottom: 20px; font-size: 0.9rem; color: #666;">Community Health Portal</p>
+
+            <!-- FORM: Collects user identity. 'required' prevents empty submissions. -->
+            <form id="login-form">
+                <label for="login-user">Full Name</label>
+                <input type="text" id="login-user" placeholder="Juan Dela Cruz" required>
+                
+                <label for="login-address">Address / Barangay</label>
+                <input type="text" id="login-address" placeholder="e.g. Barangay 12, Olongapo" required>
+                
+                <label for="login-phone">Phone Number</label>
+                <input type="tel" id="login-phone" placeholder="09123456789" required>
+                <button type="submit" class="btn-primary">Enter Dashboard</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        /* LOGIN LOGIC: 
+           This script handles the 'submit' event. Instead of sending data to a server (PHP/Node), 
+           it stores the data locally in the browser so it can be accessed by the Dashboard. */
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            // e.preventDefault() stops the page from refreshing automatically
+            e.preventDefault();
+
+            // SET SESSION DATA:
+            // 1. Sets the login flag (checked by the guard in index.html)
+        localStorage.setItem('isLoggedIn', 'true');
+
+            // 2. Grabs values from inputs and saves them to browser memory (LocalStorage)
+        localStorage.setItem('userName', document.getElementById('login-user').value);
+        localStorage.setItem('userAddress', document.getElementById('login-address').value);
+        localStorage.setItem('userPhone', document.getElementById('login-phone').value);
+         
+        // REDIRECT: Once data is saved, send the user to the main dashboard
+        window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SickSense | Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+      <div class="nav-container">
+          <h1>SickSense Admin</h1>
+          <!-- NAVIGATION: Allows the admin to quickly toggle back to the main user interface -->
+        <a href="index.html" style="color:white; text-decoration:none;">← Back to User View</a>
+      </div>
+    </nav>
+
+    <main class="container">
+        <div class="dashboard-grid">
+
+            <!-- DATA TRACKING: 
+                 This section uses 'span 2' to stretch across the full width of the grid.
+                 It displays the total count of each symptom reported by all users. -->
+            <section class="card" style="grid-column: span 2;">
+                <div class="card-header">📊 <h2>Community Health Trends</h2></div>
+                <div id="stats-container" style="display: flex; justify-content: space-around; text-align: center;">
+                    <div><h3 id="stat-fever">0</h3><p>Fever</p></div>
+                    <div><h3 id="stat-cough">0</h3><p>Cough</p></div>
+                    <div><h3 id="stat-fatigue">0</h3><p>Fatigue</p></div>
+                    <div><h3 id="stat-headache">0</h3><p>Headache</p></div>
+                </div>
+            </section>
+
+            <!-- INQUIRY MANAGEMENT: 
+                 A dynamic list where admin can read and respond to messages sent by users. -->
+            <section class="card" style="grid-column: span 2;">
+            <section class="card" style="grid-column: span 2;">
+                <div class="card-header">📨 <h2>Civilian Inquiries</h2></div>
+                <div id="admin-inquiry-list"></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+      /* INITIALIZATION:
+           When the window finishes loading, it triggers two data-fetching functions. */
+        window.onload = () => {
+            loadStats();
+            loadInquiries();
+        };
+
+        /* LOGIC: COUNTING SYMPTOMS
+           1. Retrieves the 'sickSenseLogs' array from the browser's storage.
+           2. Loops through every log, and then every symptom inside that log.
+           3. Updates the counts object and injects the final numbers into the HTML. */
+        function loadStats() {
+            const logs = JSON.parse(localStorage.getItem('sickSenseLogs')) || [];
+            const counts = { Fever: 0, Cough: 0, Fatigue: 0, Headache: 0 };
+            logs.forEach(log => {
+                log.symptoms.forEach(s => { if(counts.hasOwnProperty(s)) counts[s]++; });
+            });
+            document.getElementById('stat-fever').textContent = counts.Fever;
+            document.getElementById('stat-cough').textContent = counts.Cough;
+            document.getElementById('stat-fatigue').textContent = counts.Fatigue;
+            document.getElementById('stat-headache').textContent = counts.Headache;
+        }
+
+        /* LOGIC: DISPLAYING MESSAGES
+           1. Retrieves inquiries submitted by users.
+           2. If empty, displays a 'No inquiries' message.
+           3. If data exists, it uses .map() to create a HTML block for each message.
+           4. .reverse() ensures the newest messages appear at the top. */
+        function loadInquiries() {
+            const container = document.getElementById('admin-inquiry-list');
+            const inquiries = JSON.parse(localStorage.getItem('sickSenseInquiries')) || [];
+            if(inquiries.length === 0) { container.innerHTML = "<p>No inquiries yet.</p>"; return; }
+            
+            container.innerHTML = inquiries.map((iq, index) => `
+                <div class="info-box" style="margin-bottom:15px;">
+                    <strong>From: ${iq.name} (${iq.phone})</strong><br>
+                    <p>${iq.message}</p>
+                    <small style="color:gray;">${iq.timestamp}</small>
+                    <div style="margin-top:10px;">
+                        <input type="text" id="reply-${index}" placeholder="Type reply...">
+                        <button onclick="alert('Reply sent to ${iq.phone}!')" class="btn-action" style="width:auto; padding:5px 15px;">Reply</button>
+                    </div>
+                </div>
+            `).reverse().join('');
+        }
+    </script>
+</body>
+</html>

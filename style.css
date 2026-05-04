@@ -1,0 +1,251 @@
+/* SICKSENSE MASTER STYLESHEET */
+
+:root {
+    --primary: #2d5a27;
+    --primary-dark: #1e3d1a;
+    --bg: #f4f7f6;
+    --card-bg: #ffffff;
+    --text: #333;
+    --border: #ddd;
+    --danger: #e74c3c;
+    --accent-blue: #3498db;
+    --accent-purple: #9b59b6;
+}
+
+/* Global Reset & Layout Fixes */
+* {
+    box-sizing: border-box; /* Crucial fix for overlapping inputs */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+body.dark-theme {
+    --bg: #121212;
+    --card-bg: #1e1e1e;
+    --text: #e0e0e0;
+    --border: #333;
+}
+
+/* Navigation */
+nav {
+    background: var(--primary);
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Dashboard Grid */
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* Card Styling */
+.card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.card-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* Input & Form Elements - Fixed Spacing */
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px; /* Ensures boxes don't touch/overlap */
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+}
+
+.input-row div {
+    flex: 1;
+}
+
+/* Checkbox Alignment Fix */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 10px 0 20px 0;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 0;
+    font-weight: 400;
+}
+
+.checkbox-group input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+/* Buttons */
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-action {
+    background: var(--accent-blue);
+    color: white;
+    margin-top: 5px;
+}
+
+.btn-logout {
+    background: var(--danger);
+    color: white;
+    width: auto;
+    padding: 6px 15px;
+    font-size: 0.8rem;
+}
+
+.btn-emergency {
+    display: block;
+    text-align: center;
+    background: var(--danger);
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Welcome Banner */
+.welcome-banner {
+    grid-column: span 2;
+    background: var(--primary);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.welcome-banner p {
+    margin: 0;
+}
+
+/* Utility Classes */
+.result-box {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.info-box {
+    background: var(--bg);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid var(--primary);
+    margin-bottom: 10px;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    accent-color: var(--accent-blue);
+    margin-bottom: 10px;
+}
+
+.history-card {
+    grid-column: span 2;
+}
+
+#log-list li {
+    background: var(--bg);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 800px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .history-card, .welcome-banner {
+        grid-column: span 1;
+    }
+}

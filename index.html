@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SickSense | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        /* AUTHENTICATION GUARD: 
+           Checks if the user is logged in before the rest of the page even loads. 
+           If 'isLoggedIn' is not set to 'true' in the browser's storage, 
+           it kicks them back to the login page. */
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+        <!-- WELCOME SECTION: Uses IDs so JavaScript can inject the user's specific name and location data -->
+            <h1>SickSense</h1>
+            <div class="nav-controls">
+                <!-- THEME TOGGLE: Calls a JS function to switch CSS variables (light/dark) -->
+                <button id="dark-mode-btn" onclick="toggleDarkMode()">🌙 Theme</button>
+                <!-- LOGOUT: Should clear localStorage and redirect to login -->
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+    </nav>
+
+    <main class="container">
+        <div class="card welcome-banner">
+            <p>Welcome back, <strong id="display-name">User</strong>!</p>
+            <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 5px;">
+                Monitoring Community: <span id="display-address">Location</span>
+            </p>
+        </div>
+
+        <div class="dashboard-grid">
+            
+            <!-- SYMPTOM LOGGER: 
+                 Note the 'data-weight'. This is a custom attribute used to 
+                 calculate how 'sick' a user is (e.g., Fever is weighted heavier than Fatigue). -->
+            <section class="card">
+                <div class="card-header">📋 <h2>Symptom Logger</h2></div>
+                <form id="symptom-form">
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="symptom" value="Fever" data-weight="3"> Fever</label>
+                        <label><input type="checkbox" class="symptom" value="Cough" data-weight="2"> Cough</label>
+                        <label><input type="checkbox" class="symptom" value="Fatigue" data-weight="1"> Fatigue</label>
+                        <label><input type="checkbox" class="symptom" value="Headache" data-weight="1"> Headache</label>
+                    </div>
+                    
+                    <div class="additional-info-section" style="border-top: 1px solid var(--border); padding-top: 15px;">
+                        <label for="onset-date">Date symptoms started:</label>
+                        <input type="date" id="onset-date">
+                        
+                        <label for="extra-notes">Additional Details:</label>
+                        <textarea id="extra-notes" placeholder="e.g., Sore throat, difficulty breathing..." rows="2"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Check Health Score</button>
+                </form>
+                <!-- HIDDEN BY DEFAULT: JS will toggle 'display:block' and inject text here after submission -->
+                <div id="score-display" class="result-box" style="display:none;"></div>
+            </section>
+
+            <!-- BMI CALCULATOR: standard mathematical inputs for JS calculations -->
+            <section class="card">
+                <div class="card-header">⚖️ <h2>BMI Calculator</h2></div>
+                <label for="bmi-age">Age</label>
+                <input type="number" id="bmi-age" placeholder="Enter age (2-120)">
+                
+                <div class="input-row">
+                    <div>
+                        <label for="bmi-weight">Weight (kg)</label>
+                        <input type="number" id="bmi-weight" placeholder="kg">
+                    </div>
+                    <div>
+                        <label for="bmi-height">Height (cm)</label>
+                        <input type="number" id="bmi-height" placeholder="cm">
+                    </div>
+                </div>
+                
+                <button onclick="calculateBMI()" class="btn-action" style="background: var(--accent-purple);">Calculate Result</button>
+                <div id="bmi-result" class="result-box" style="display:none;"></div>
+            </section>
+
+            <!-- HYDRATION TRACKER: Uses the HTML5 <progress> element for a visual health bar -->
+            <section class="card">
+                <div class="card-header">💧 <h2>Hydration</h2></div>
+                <p style="margin-bottom: 10px;">Daily Goal: 8 Glasses</p>
+                <progress id="water-progress" value="0" max="8"></progress>
+                <p id="water-count" style="text-align: center; font-weight: bold; margin: 10px 0;">0/8 Glasses</p>
+                <button onclick="addWater()" class="btn-action">Add Glass of Water</button>
+            </section>
+
+            <!-- REMEDY FINDER: 'onkeyup' triggers the search function every time a user types a letter -->
+            <section class="card">
+                <div class="card-header">🔍 <h2>Remedy Finder</h2></div>
+                <label for="library-search">Quick Search</label>
+                <input type="text" id="library-search" placeholder="Search symptom (e.g. fever)..." onkeyup="searchRemedy()">
+                <div id="remedy-result"></div>
+            </section>
+
+            <!-- DAILY TIP: An empty box that gets populated by a JS array or API -->
+            <section class="card">
+                <div class="card-header">💡 <h2>Daily Health Tip</h2></div>
+                <div id="tip-box" class="info-box">Loading tip...</div>
+                <button onclick="getNewTip()" class="btn-action" style="background: #e67e22;">Get New Tip</button>
+            </section>
+
+            <!-- EMERGENCY: Uses URI schemes (tel: and sms:) to trigger native phone apps -->
+            <section class="card">
+                <div class="card-header">🚨 <h2>Emergency Help</h2></div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="tel:911" class="btn-emergency">📞 Call Emergency</a>
+                    <a href="sms:12345" class="btn-emergency" style="background: var(--accent-blue);">💬 Text Campus Nurse</a>
+                </div>
+            </section>
+
+            <!-- LOG HISTORY: The <ul> starts empty and is filled by JS (reading from LocalStorage) -->
+            <section class="card history-card">
+                <div class="card-header">📜 <h2>Local Log History</h2></div>
+                <ul id="log-list" style="list-style:none; padding:0;">
+                    </ul>
+                <button onclick="clearLogs()" class="btn-clear" style="background:#7f8c8d; color:white; width:auto; padding: 8px 20px;">Clear All History</button>
+            </section>
+
+            <!-- ADMIN INQUIRY: A basic contact form for support/reporting -->
+            <section class="card history-card">
+                <div class="card-header">✉️ <h2>Admin Inquiry</h2></div>
+                <form id="inquiry-form">
+                    <label for="inquiry-text">Message Admin</label>
+                    <textarea id="inquiry-text" placeholder="Ask a question or report an issue..." rows="3" required></textarea>
+                    <button type="submit" class="btn-primary">Send Inquiry</button>
+                </form>
+
+            <!-- HIDDEN STATUS: Shown only after a successful form submission -->
+                <div id="inquiry-status" style="margin-top:10px; font-size:0.9rem; color: var(--primary); display:none; text-align: center; font-weight: bold;">
+                    ✔ Message sent to admin!
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="admin.html" style="font-size: 0.8rem; color: gray; text-decoration: none;">View Admin Dashboard (Internal Use) →</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- CORE LOGIC: This script file must contain all functions called above -->
+    <script src="script.js"></script>
+</body>
+</html>
