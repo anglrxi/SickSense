@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SickSense | Health for All. Powered by All.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5db08d;
+            --primary-dark: #4a9a7a;
+            --primary-darker: #3d8568;
+            --sidebar-bg: #5db08d;
+            --sidebar-text: #ffffff;
+            --bg: #f0f7f4;
+            --bg-card: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e8e3;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --accent-blue: #3498db;
+            --accent-orange: #e67e22;
+            --error: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --header-bg: #5db08d;
+            --header-text: #ffffff;
+            --gradient-start: #5db08d;
+            --gradient-end: #a8e6cf;
+            --input-bg: #ffffff;
+            --input-border: #d5e0d8;
+            --hover-bg: rgba(255,255,255,0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #6bcba3;
+            --primary-dark: #5db08d;
+            --primary-darker: #4a9a7a;
+            --sidebar-bg: #2d3e36;
+            --sidebar-text: #e0f0e8;
+            --bg: #1a1f1c;
+            --bg-card: #2a3530;
+            --text: #e0f0e8;
+            --text-light: #8a9a8f;
+            --border: #3a4a42;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.4);
+            --accent-blue: #5dade2;
+            --accent-orange: #f0a050;
+            --header-bg: #2d3e36;
+            --header-text: #e0f0e8;
+            --gradient-start: #3d5a4a;
+            --gradient-end: #2a3530;
+            --input-bg: #1e2822;
+            --input-border: #3a4a42;
+            --hover-bg: rgba(255,255,255,0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease, background 0.3s;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-logo::before {
+            content: '+';
+            font-size: 50px;
+            color: var(--primary);
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .sidebar-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 10px;
+            letter-spacing: 3px;
+            opacity: 0.8;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 4px 16px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--hover-bg);
+            opacity: 1;
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--sidebar-text);
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Mobile Sidebar Toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: background 0.3s;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .header-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            padding: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: var(--header-text);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Views */
+        .view {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .card-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light, rgba(93,176,141,0.15));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            background: var(--input-bg);
+            color: var(--text);
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(93,176,141,0.15);
+        }
+
+        .form-input.error, .form-textarea.error, .form-select.error {
+            border-color: var(--error);
+            background: rgba(231,76,60,0.05);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(93,176,141,0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(93,176,141,0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .checkbox-label:hover {
+            background: var(--border);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            display: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 16px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--bg);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent-blue));
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        /* Emergency Buttons */
+        .emergency-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-emergency {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-emergency:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-emergency.call {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-emergency.text {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .emergency-icon {
+            font-size: 24px;
+        }
+
+        /* Log History */
+        .log-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .log-item {
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .log-item strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .log-empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 30px;
+            font-style: italic;
+        }
+
+        /* Admin Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg);
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Inquiry Items */
+        .inquiry-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .inquiry-item {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--accent-blue);
+            transition: transform 0.2s;
+        }
+
+        .inquiry-item:hover {
+            transform: translateX(4px);
+        }
+
+        .inquiry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .inquiry-author {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .inquiry-phone {
+            font-size: 12px;
+            color: var(--text-light);
+            background: var(--bg-card);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .inquiry-message {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .inquiry-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .inquiry-reply {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .inquiry-reply input {
+            flex: 1;
+            margin-bottom: 0 !important;
+        }
+
+        /* Remedy Results */
+        .remedy-result {
+            margin-top: 16px;
+        }
+
+        .remedy-item {
+            padding: 14px;
+            background: var(--bg);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent-orange);
+        }
+
+        .remedy-item h4 {
+            color: var(--accent-orange);
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .remedy-item p {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--success);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            animation: slideInRight 0.4s ease;
+            max-width: 350px;
+        }
+
+        .toast.error {
+            background: var(--error);
+        }
+
+        .toast.warning {
+            background: var(--warning);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--bg);
+        }
+
+        /* Terms Content */
+        .terms-content h3 {
+            color: var(--primary);
+            margin: 20px 0 10px;
+            font-size: 16px;
+        }
+
+        .terms-content p, .terms-content li {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+
+        .terms-content ul {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .terms-content li {
+            margin-bottom: 6px;
+        }
+
+        /* Loading */
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .top-header {
+                padding-left: 70px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .hero-banner {
+                padding: 24px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 20px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+        }
+
+        /* Overlay for mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Admin View Specific */
+        .admin-view .hero-banner {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+            border-left: 3px solid var(--accent-orange);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Toggle -->
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                
+                <div class="sidebar-title">SICK SENSE</div>
+                <div class="sidebar-subtitle">Health for All. Powered by All.</div>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="navigateTo('dashboard')">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        </span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="navigateTo('checkup')">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                        </span>
+                        Check Up
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="navigateTo('report')">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                        </span>
+                        Report
+                    </a>
+                </li>
+                <li class="nav-item" id="adminNavItem" style="display: none;">
+                    <a class="nav-link" onclick="navigateTo('admin')">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                        </span>
+                        Admin
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">Dark Mode</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-brand">
+                    <span>Health for All. Powered by All.</span>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="logout()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                
+                <!-- DASHBOARD VIEW -->
+                <div class="view active" id="dashboardView">
+                    <div class="hero-banner">
+                        <div class="hero-title">Dashboard</div>
+                        <div class="hero-subtitle">A quick access to general health tools</div>
+                    </div>
+
+                    <div class="cards-grid">
+                        <!-- Daily Health Tips -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">💡</div>
+                                <h2>Daily Health Tips</h2>
+                            </div>
+                            <div class="info-box" id="tipBox">
+                                A 20-minute walk improves heart health.
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="getNewTip()" style="margin-top: 16px;">
+                                Get a new Health Tip
+                            </button>
+                        </div>
+
+                        <!-- Hydration Tracker -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">💧</div>
+                                <h2>Daily Hydration Tracker</h2>
+                            </div>
+                            <p style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">
+                                Daily Goal: Eight (8) glasses of water worth eight (8) ounces each.
+                            </p>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="waterProgress" style="width: 0%">0%</div>
+                                </div>
+                                <div class="progress-text" id="waterText">0/8 Glasses</div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" onclick="addWater()">Add a Glass</button>
+                                <button class="btn btn-secondary" onclick="removeWater()">Remove a Glass</button>
+                                <button class="btn btn-danger" onclick="resetWater()">Reset Glasses</button>
+                            </div>
+                        </div>
+
+                        <!-- BMI Calculator -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">📏</div>
+                                <h2>BMI Calculator</h2>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Age</label>
+                                <input type="number" class="form-input" id="bmiAge" placeholder="Enter age (2-120)" min="2" max="120">
+                                <div class="error-message" id="bmiAgeError">Please enter a valid age (2-120)</div>
+                            </div>
+                            <div class="input-row">
+                                <div class="form-group">
+                                    <label class="form-label">Height (cm)</label>
+                                    <input type="number" class="form-input" id="bmiHeight" placeholder="Enter cm (10-270)" min="10" max="270">
+                                    <div class="error-message" id="bmiHeightError">Height must be 10-270cm</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Weight (kg)</label>
+                                    <input type="number" class="form-input" id="bmiWeight" placeholder="Enter kg (10-1400)" min="10" max="1400">
+                                    <div class="error-message" id="bmiWeightError">Weight must be 10-1400kg</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="calculateBMI()">Calculate Results</button>
+                            <div class="result-box" id="bmiResult"></div>
+                        </div>
+
+                        <!-- Emergency Help -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">🚨</div>
+                                <h2>Emergency Help</h2>
+                            </div>
+                            <div class="emergency-grid">
+                                <a href="tel:911" class="btn-emergency call">
+                                    <span class="emergency-icon">📞</span>
+                                    Call Emergency
+                                </a>
+                                <a href="sms:12345" class="btn-emergency text">
+                                    <span class="emergency-icon">💬</span>
+                                    Text Barangay Health Worker
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHECKUP VIEW -->
+                <div class="view" id="checkupView">
+                    <div class="hero-banner">
+                        <div class="hero-title">Check Up</div>
+                        <div class="hero-subtitle">Monitor your symptoms and find remedies</div>
+                    </div>
+
+                    <div class="cards-grid">
+                        <!-- Symptom Logger -->
+                        <div class="card" style="grid-column: span 2;">
+                            <div class="card-header">
+                                <div class="card-icon">📋</div>
+                                <h2>Symptom Logger</h2>
+                            </div>
+                            <form id="symptomForm" onsubmit="checkHealthScore(event)">
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="symptom-check" value="Fever" data-weight="3">
+                                        Fever
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="symptom-check" value="Cough" data-weight="2">
+                                        Cough
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="symptom-check" value="Fatigue" data-weight="1">
+                                        Fatigue
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" class="symptom-check" value="Headache" data-weight="1">
+                                        Headache
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Date symptoms started</label>
+                                    <input type="date" class="form-input" id="onsetDate" required>
+                                    <div class="error-message" id="dateError">Please select a valid date (not in the future)</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Additional Details</label>
+                                    <textarea class="form-textarea" id="extraNotes" placeholder="e.g., Sore throat, difficulty breathing..." rows="3"></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block" id="checkScoreBtn">
+                                    <span class="spinner"></span>
+                                    <span class="btn-text">Check Health Score</span>
+                                </button>
+                            </form>
+                            <div class="result-box" id="scoreResult"></div>
+                        </div>
+
+                        <!-- Remedy Finder -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">🔍</div>
+                                <h2>Remedy Finder</h2>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-input" id="remedySearch" placeholder="Search symptom (e.g. fever)..." onkeyup="searchRemedy()">
+                            </div>
+                            <div class="remedy-result" id="remedyResult"></div>
+                        </div>
+
+                        <!-- Local Log History -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">📜</div>
+                                <h2>Local Log History</h2>
+                            </div>
+                            <ul class="log-list" id="logList">
+                                <li class="log-empty">No logs yet. Start by checking your symptoms!</li>
+                            </ul>
+                            <button class="btn btn-secondary btn-block" onclick="clearLogs()" style="margin-top: 16px;">
+                                Clear All History
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REPORT VIEW -->
+                <div class="view" id="reportView">
+                    <div class="hero-banner">
+                        <div class="hero-title">Report</div>
+                        <div class="hero-subtitle">Send a message to the admin team</div>
+                    </div>
+
+                    <div class="cards-grid" style="max-width: 600px; margin: 0 auto;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">✉️</div>
+                                <h2>Admin Inquiry</h2>
+                            </div>
+                            <form id="inquiryForm" onsubmit="sendInquiry(event)">
+                                <div class="form-group">
+                                    <label class="form-label">Your Name</label>
+                                    <input type="text" class="form-input" id="inquiryName" placeholder="Enter your full name" required>
+                                    <div class="error-message" id="inquiryNameError">Please enter your name</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" id="inquiryPhone" class="form-input" placeholder="Enter your phone number" maxlength="11" pattern="\d{11}">
+                                    <div class="error-message" id="inquiryPhoneError">Please enter a valid phone number</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Message</label>
+                                    <textarea class="form-textarea" id="inquiryMessage" placeholder="Ask a question or report an issue..." rows="4" required></textarea>
+                                    <div class="error-message" id="inquiryMessageError">Please enter your message</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block" id="sendInquiryBtn">
+                                    <span class="spinner"></span>
+                                    <span class="btn-text">Send Inquiry</span>
+                                </button>
+                            </form>
+                            <div class="result-box show" id="inquiryStatus" style="display: none; border-left-color: var(--success);">
+                                ✔ Message sent to admin!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN VIEW -->
+                <div class="view admin-view" id="adminView">
+                    <div class="hero-banner">
+                        <div class="hero-title">Administrator Panel</div>
+                        <div class="hero-subtitle">Community Health Overview</div>
+                    </div>
+
+                    <div class="cards-grid">
+                        <!-- Community Trends -->
+                        <div class="card" style="grid-column: span 2;">
+                            <div class="card-header">
+                                <div class="card-icon">📊</div>
+                                <h2>Community Health Trends</h2>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statFever">0</div>
+                                    <div class="stat-label">Fever</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statCough">0</div>
+                                    <div class="stat-label">Cough</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statFatigue">0</div>
+                                    <div class="stat-label">Fatigue</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number" id="statHeadache">0</div>
+                                    <div class="stat-label">Headache</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Civilian Inquiries -->
+                        <div class="card" style="grid-column: span 2;">
+                            <div class="card-header">
+                                <div class="card-icon">📨</div>
+                                <h2>Civilian Inquiries</h2>
+                            </div>
+                            <div class="inquiry-list" id="inquiryList">
+                                <div class="log-empty">No inquiries yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Terms Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Terms and Policies</div>
+                <button class="modal-close" onclick="closeTerms()">×</button>
+            </div>
+            <div class="terms-content">
+                <p style="color: var(--text-light); font-size: 13px; margin-bottom: 16px;">Updated last May 12, 2026</p>
+                
+                <div style="display: flex; align-items: center; gap: 16px; margin: 20px 0;">
+                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                    <span style="font-weight: 600; color: var(--text);">Terms and Conditions</span>
+                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                </div>
+
+                <h3>Purpose</h3>
+                <p>Sick Sense is a community-based health monitoring system designed to help monitor health conditions, organize records, and support early health awareness.</p>
+
+                <h3>Information Collected</h3>
+                <p>We may collect:</p>
+                <ul>
+                    <li>Full Name</li>
+                    <li>Date of Birth</li>
+                    <li>Height / Weight / BMI</li>
+                    <li>Address</li>
+                    <li>Contact Number</li>
+                    <li>Symptoms or health-related entries</li>
+                    <li>Login credentials</li>
+                </ul>
+
+                <h3>User Responsibilities</h3>
+                <p>You agree to:</p>
+                <ul>
+                    <li>Provide accurate information</li>
+                    <li>Keep account credentials secure</li>
+                    <li>Use the system lawfully</li>
+                    <li>Avoid unauthorized access</li>
+                </ul>
+
+                <h3>Data Privacy</h3>
+                <p>Your health data is encrypted and stored securely. We do not share your personal information with third parties without your explicit consent, except as required by law.</p>
+
+                <h3>Limitations</h3>
+                <p>Sick Sense is not a replacement for professional medical advice. Always consult with qualified healthcare providers for medical decisions.</p>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="closeTerms()" style="margin-top: 24px;">
+                I Understand
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        let currentView = 'dashboard';
+        let waterCount = 0;
+        const waterGoal = 8;
+        let isAdmin = false;
+
+        // Health Tips Database
+        const healthTips = [
+            "A 20-minute walk improves heart health.",
+            "Drink water before meals to aid digestion.",
+            "Get 7-9 hours of sleep for optimal recovery.",
+            "Wash hands frequently to prevent infections.",
+            "Eat colorful vegetables for diverse nutrients.",
+            "Take breaks from screens every 20 minutes.",
+            "Deep breathing reduces stress instantly.",
+            "Stretching in the morning improves flexibility.",
+            "Limit sugar intake to boost immunity.",
+            "Regular exercise lowers blood pressure."
+        ];
+
+        // Remedy Database
+        const remedies = {
+            "fever": [
+                { title: "Rest and Hydration", desc: "Drink plenty of fluids and get adequate rest." },
+                { title: "Cool Compress", desc: "Apply a damp cloth to forehead and neck." },
+                { title: "Light Clothing", desc: "Wear breathable fabrics to allow heat escape." }
+            ],
+            "cough": [
+                { title: "Honey Tea", desc: "Mix honey in warm water or tea to soothe throat." },
+                { title: "Steam Inhalation", desc: "Breathe in steam to loosen mucus." },
+                { title: "Throat Lozenges", desc: "Suck on medicated lozenges for relief." }
+            ],
+            "headache": [
+                { title: "Cold Pack", desc: "Apply ice pack to temples for 15 minutes." },
+                { title: "Caffeine", desc: "Small amount of caffeine may help relieve pain." },
+                { title: "Dark Room", desc: "Rest in a quiet, dark room." }
+            ],
+            "fatigue": [
+                { title: "Power Nap", desc: "Take a 20-minute nap to recharge." },
+                { title: "Iron-rich Foods", desc: "Eat spinach, beans, or lean meats." },
+                { title: "Hydration", desc: "Dehydration is a common cause of fatigue." }
+            ]
+        };
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set max date for symptom date picker to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('onsetDate').setAttribute('max', today);
+            
+            // Load saved data
+            loadWaterCount();
+            loadLogs();
+            loadTheme();
+            
+            // Check if admin (for demo, you can set this via console: localStorage.setItem('isAdmin', 'true'))
+            if (localStorage.getItem('isAdmin') === 'true') {
+                isAdmin = true;
+                document.getElementById('adminNavItem').style.display = 'block';
+            }
+
+            // Load initial tip
+            getNewTip();
+        });
+
+        // ==================== NAVIGATION ====================
+        function navigateTo(view) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            
+            // Show selected view
+            document.getElementById(view + 'View').classList.add('active');
+            
+            // Update nav active state
+            const navLinks = document.querySelectorAll('.nav-link');
+            const viewMap = { 'dashboard': 0, 'checkup': 1, 'report': 2, 'admin': 3 };
+            if (navLinks[viewMap[view]]) {
+                navLinks[viewMap[view]].classList.add('active');
+            }
+            
+            currentView = view;
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+
+            // Load admin data if entering admin view
+            if (view === 'admin') {
+                loadStats();
+                loadInquiries();
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
+        // ==================== THEME ====================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeUI(newTheme);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeUI(savedTheme);
+        }
+
+        function updateThemeUI(theme) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (theme === 'dark') {
+                icon.textContent = '☀️';
+                text.textContent = 'Light Mode';
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark Mode';
+            }
+        }
+
+        // ==================== TOAST NOTIFICATIONS ====================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = '✓';
+            if (type === 'error') icon = '✕';
+            if (type === 'warning') icon = '!';
+            
+            toast.innerHTML = `<span>${icon}</span> ${message}`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // ==================== WATER TRACKER ====================
+        function loadWaterCount() {
+            const saved = localStorage.getItem('sickSenseWater');
+            waterCount = saved ? parseInt(saved) : 0;
+            updateWaterUI();
+        }
+
+        function saveWaterCount() {
+            localStorage.setItem('sickSenseWater', waterCount);
+        }
+
+        function updateWaterUI() {
+            const percentage = Math.min((waterCount / waterGoal) * 100, 100);
+            const progress = document.getElementById('waterProgress');
+            const text = document.getElementById('waterText');
+            
+            progress.style.width = percentage + '%';
+            progress.textContent = Math.round(percentage) + '%';
+            text.textContent = `${waterCount}/${waterGoal} Glasses`;
+            
+            if (waterCount >= waterGoal) {
+                text.style.color = 'var(--success)';
+                showToast('Daily hydration goal reached! 🎉');
+            }
+        }
+
+        function addWater() {
+            if (waterCount < waterGoal) {
+                waterCount++;
+                saveWaterCount();
+                updateWaterUI();
+            } else {
+                showToast('You\'ve already reached your daily goal!', 'warning');
+            }
+        }
+
+        function removeWater() {
+            if (waterCount > 0) {
+                waterCount--;
+                saveWaterCount();
+                updateWaterUI();
+            }
+        }
+
+        function resetWater() {
+            waterCount = 0;
+            saveWaterCount();
+            updateWaterUI();
+            showToast('Hydration tracker reset');
+        }
+
+        // ==================== BMI CALCULATOR ====================
+        function calculateBMI() {
+            const ageInput = document.getElementById('bmiAge');
+            const heightInput = document.getElementById('bmiHeight');
+            const weightInput = document.getElementById('bmiWeight');
+            const resultBox = document.getElementById('bmiResult');
+            
+            const age = parseInt(ageInput.value);
+            const height = parseFloat(heightInput.value);
+            const weight = parseFloat(weightInput.value);
+            
+            let hasError = false;
+            
+            // Validate Age
+            if (!age || age < 2 || age > 120) {
+                showFieldError('bmiAge', 'bmiAgeError');
+                hasError = true;
+            } else {
+                clearFieldError('bmiAge', 'bmiAgeError');
+            }
+            
+            // Validate Height (10-270cm)
+            if (!height || height < 10 || height > 270) {
+                showFieldError('bmiHeight', 'bmiHeightError');
+                hasError = true;
+            } else {
+                clearFieldError('bmiHeight', 'bmiHeightError');
+            }
+            
+            // Validate Weight (10-1400kg)
+            if (!weight || weight < 10 || weight > 1400) {
+                showFieldError('bmiWeight', 'bmiWeightError');
+                hasError = true;
+            } else {
+                clearFieldError('bmiWeight', 'bmiWeightError');
+            }
+            
+            if (hasError) return;
+            
+            // Calculate BMI
+            const heightM = height / 100;
+            const bmi = (weight / (heightM * heightM)).toFixed(1);
+            
+            let category = '';
+            let color = '';
+            
+            if (bmi < 18.5) { category = 'Underweight'; color = 'var(--accent-blue)'; }
+            else if (bmi < 25) { category = 'Normal weight'; color = 'var(--success)'; }
+            else if (bmi < 30) { category = 'Overweight'; color = 'var(--warning)'; }
+            else { category = 'Obese'; color = 'var(--danger)'; }
+            
+            resultBox.innerHTML = `
+                <div style="font-size: 24px; font-weight: 700; color: ${color}; margin-bottom: 4px;">BMI: ${bmi}</div>
+                <div style="font-size: 16px; color: var(--text);">Category: ${category}</div>
+                <div style="font-size: 13px; color: var(--text-light); margin-top: 8px;">
+                    Age: ${age} years | Height: ${height}cm | Weight: ${weight}kg
+                </div>
+            `;
+            resultBox.classList.add('show');
+            resultBox.style.borderLeftColor = color;
+        }
+
+        // ==================== SYMPTOM LOGGER ====================
+        function checkHealthScore(e) {
+            e.preventDefault();
+            
+            const checkboxes = document.querySelectorAll('.symptom-check:checked');
+            const dateInput = document.getElementById('onsetDate');
+            const notes = document.getElementById('extraNotes').value.trim();
+            const resultBox = document.getElementById('scoreResult');
+            const btn = document.getElementById('checkScoreBtn');
+            
+            // Validate date
+            const selectedDate = new Date(dateInput.value);
+            const today = new Date();
+            today.setHours(23, 59, 59, 999);
+            
+            if (!dateInput.value || selectedDate > today) {
+                showFieldError('onsetDate', 'dateError');
+                return;
+            } else {
+                clearFieldError('onsetDate', 'dateError');
+            }
+            
+            if (checkboxes.length === 0) {
+                showToast('Please select at least one symptom', 'error');
+                return;
+            }
+            
+            // Calculate score
+            let totalWeight = 0;
+            const symptoms = [];
+            
+            checkboxes.forEach(cb => {
+                totalWeight += parseInt(cb.dataset.weight);
+                symptoms.push(cb.value);
+            });
+            
+            let severity = '';
+            let color = '';
+            let advice = '';
+            
+            if (totalWeight <= 2) {
+                severity = 'Mild';
+                color = 'var(--success)';
+                advice = 'Monitor your symptoms and rest. Stay hydrated.';
+            } else if (totalWeight <= 5) {
+                severity = 'Moderate';
+                color = 'var(--warning)';
+                advice = 'Consider consulting a healthcare provider if symptoms persist.';
+            } else {
+                severity = 'Severe';
+                color = 'var(--danger)';
+                advice = 'Please seek medical attention immediately.';
+            }
+            
+            // Save log
+            const log = {
+                symptoms: symptoms,
+                date: dateInput.value,
+                notes: notes,
+                score: totalWeight,
+                severity: severity,
+                timestamp: new Date().toLocaleString()
+            };
+            
+            saveLog(log);
+            
+            // Show result
+            resultBox.innerHTML = `
+                <div style="font-size: 20px; font-weight: 700; color: ${color}; margin-bottom: 8px;">
+                    Health Score: ${totalWeight}/9 (${severity})
+                </div>
+                <div style="margin-bottom: 8px;"><strong>Symptoms:</strong> ${symptoms.join(', ')}</div>
+                <div style="margin-bottom: 8px;"><strong>Started:</strong> ${dateInput.value}</div>
+                ${notes ? `<div style="margin-bottom: 8px;"><strong>Notes:</strong> ${notes}</div>` : ''}
+                <div style="padding: 10px; background: rgba(0,0,0,0.05); border-radius: 8px; margin-top: 10px;">
+                    <strong>Advice:</strong> ${advice}
+                </div>
+            `;
+            resultBox.classList.add('show');
+            resultBox.style.borderLeftColor = color;
+            
+            // Reset form
+            document.getElementById('symptomForm').reset();
+            
+            showToast('Health score calculated and saved!');
+        }
+
+        // ==================== LOGS ====================
+        function saveLog(log) {
+            let logs = JSON.parse(localStorage.getItem('sickSenseLogs')) || [];
+            logs.push(log);
+            localStorage.setItem('sickSenseLogs', JSON.stringify(logs));
+            loadLogs();
+        }
+
+        function loadLogs() {
+            const list = document.getElementById('logList');
+            const logs = JSON.parse(localStorage.getItem('sickSenseLogs')) || [];
+            
+            if (logs.length === 0) {
+                list.innerHTML = '<li class="log-empty">No logs yet. Start by checking your symptoms!</li>';
+                return;
+            }
+            
+            list.innerHTML = logs.slice().reverse().map(log => `
+                <li class="log-item">
+                    <strong>${log.severity} (${log.score}/9)</strong>
+                    <div>Symptoms: ${log.symptoms.join(', ')}</div>
+                    <div>Started: ${log.date}</div>
+                    ${log.notes ? `<div>Notes: ${log.notes}</div>` : ''}
+                    <div style="font-size: 11px; color: var(--text-light); margin-top: 4px;">${log.timestamp}</div>
+                </li>
+            `).join('');
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all logs?')) {
+                localStorage.removeItem('sickSenseLogs');
+                loadLogs();
+                showToast('All logs cleared');
+            }
+        }
+
+        // ==================== REMEDY FINDER ====================
+        function searchRemedy() {
+            const query = document.getElementById('remedySearch').value.toLowerCase().trim();
+            const resultDiv = document.getElementById('remedyResult');
+            
+            if (!query) {
+                resultDiv.innerHTML = '';
+                return;
+            }
+            
+            let results = [];
+            
+            for (const [symptom, items] of Object.entries(remedies)) {
+                if (symptom.includes(query) || query.includes(symptom)) {
+                    results = results.concat(items.map(item => ({...item, symptom})));
+                }
+            }
+            
+            if (results.length === 0) {
+                resultDiv.innerHTML = '<div class="log-empty">No remedies found. Try "fever", "cough", "headache", or "fatigue".</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = results.map(r => `
+                <div class="remedy-item">
+                    <h4>${r.title} (${r.symptom})</h4>
+                    <p>${r.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        // ==================== DAILY TIPS ====================
+        function getNewTip() {
+            const tipBox = document.getElementById('tipBox');
+            const randomTip = healthTips[Math.floor(Math.random() * healthTips.length)];
+            tipBox.style.opacity = '0';
+            setTimeout(() => {
+                tipBox.textContent = randomTip;
+                tipBox.style.opacity = '1';
+            }, 200);
+        }
+
+        // ==================== INQUIRY / REPORT ====================
+        function sendInquiry(e) {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById('inquiryName');
+            const phoneInput = document.getElementById('inquiryPhone');
+            const messageInput = document.getElementById('inquiryMessage');
+            const btn = document.getElementById('sendInquiryBtn');
+            
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const message = messageInput.value.trim();
+            
+            let hasError = false;
+            
+            if (!name || name.length < 2) {
+                showFieldError('inquiryName', 'inquiryNameError');
+                hasError = true;
+            } else {
+                clearFieldError('inquiryName', 'inquiryNameError');
+            }
+            
+            if (!phone || phone.length < 7) {
+                showFieldError('inquiryPhone', 'inquiryPhoneError');
+                hasError = true;
+            } else {
+                clearFieldError('inquiryPhone', 'inquiryPhoneError');
+            }
+            
+            if (!message || message.length < 5) {
+                showFieldError('inquiryMessage', 'inquiryMessageError');
+                hasError = true;
+            } else {
+                clearFieldError('inquiryMessage', 'inquiryMessageError');
+            }
+            
+            if (hasError) return;
+            
+            // Simulate loading
+            btn.classList.add('loading');
+            
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                
+                const inquiry = {
+                    name: name,
+                    phone: phone,
+                    message: message,
+                    timestamp: new Date().toLocaleString()
+                };
+                
+                let inquiries = JSON.parse(localStorage.getItem('sickSenseInquiries')) || [];
+                inquiries.push(inquiry);
+                localStorage.setItem('sickSenseInquiries', JSON.stringify(inquiries));
+                
+                document.getElementById('inquiryStatus').style.display = 'block';
+                document.getElementById('inquiryForm').reset();
+                
+                showToast('Message sent to admin successfully!');
+                
+                setTimeout(() => {
+                    document.getElementById('inquiryStatus').style.display = 'none';
+                }, 3000);
+            }, 1000);
+        }
+
+        // ==================== ADMIN FUNCTIONS ====================
+        function loadStats() {
+            const logs = JSON.parse(localStorage.getItem('sickSenseLogs')) || [];
+            const counts = { Fever: 0, Cough: 0, Fatigue: 0, Headache: 0 };
+            
+            logs.forEach(log => {
+                log.symptoms.forEach(s => {
+                    if (counts.hasOwnProperty(s)) counts[s]++;
+                });
+            });
+            
+            document.getElementById('statFever').textContent = counts.Fever;
+            document.getElementById('statCough').textContent = counts.Cough;
+            document.getElementById('statFatigue').textContent = counts.Fatigue;
+            document.getElementById('statHeadache').textContent = counts.Headache;
+        }
+
+        function loadInquiries() {
+            const container = document.getElementById('inquiryList');
+            const inquiries = JSON.parse(localStorage.getItem('sickSenseInquiries')) || [];
+            
+            if (inquiries.length === 0) {
+                container.innerHTML = '<div class="log-empty">No inquiries yet.</div>';
+                return;
+            }
+            
+            container.innerHTML = inquiries.slice().reverse().map((iq, index) => `
+                <div class="inquiry-item">
+                    <div class="inquiry-header">
+                        <span class="inquiry-author">${iq.name}</span>
+                        <span class="inquiry-phone">${iq.phone}</span>
+                    </div>
+                    <div class="inquiry-message">${iq.message}</div>
+                    <div class="inquiry-time">${iq.timestamp}</div>
+                    <div class="inquiry-reply">
+                        <input type="text" class="form-input" id="reply-${index}" placeholder="Type reply...">
+                        <button class="btn btn-primary" onclick="sendReply('${iq.phone}', ${index})" style="width: auto; padding: 0 20px;">Reply</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function sendReply(phone, index) {
+            const replyInput = document.getElementById(`reply-${index}`);
+            const reply = replyInput.value.trim();
+            
+            if (!reply) {
+                showToast('Please type a reply', 'error');
+                return;
+            }
+            
+            showToast(`Reply sent to ${phone}!`);
+            replyInput.value = '';
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function showFieldError(inputId, errorId) {
+            document.getElementById(inputId).classList.add('error');
+            document.getElementById(errorId).classList.add('show');
+        }
+
+        function clearFieldError(inputId, errorId) {
+            document.getElementById(inputId).classList.remove('error');
+            document.getElementById(errorId).classList.remove('show');
+        }
+
+        function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('isLoggedIn'); // Clear login state
+            showToast('Logged out successfully');
+            
+            setTimeout(() => {
+                // Redirect to login page after 1 second
+                window.location.href = 'login.html'; 
+            }, 1000);
+          }
+        }
+
+        // Clear errors on input
+        document.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('error');
+                const errorId = this.id + 'Error';
+                const errorEl = document.getElementById(errorId);
+                if (errorEl) errorEl.classList.remove('show');
+            });
+        });
+
+        // Phone number validation - numbers only
+        document.getElementById('inquiryPhone')?.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9+\-\s]/g, '');
+        });
+
+        // ==================== TERMS MODAL ====================
+        function showTerms() {
+            document.getElementById('termsModal').classList.add('active');
+        }
+
+        function closeTerms() {
+            document.getElementById('termsModal').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('termsModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeTerms();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTerms();
+                document.getElementById('sidebar').classList.remove('open');
+                document.querySelector('.sidebar-overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
